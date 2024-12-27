@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Docker Containers</title>
+</head>
+<body>
+ <h1>Running Docker Containers</h1>
+ {% with messages = get_flashed_messages() %}
+ {% if messages %}
+   <div class="alert alert-info" role="alert">
+   {% for message in messages %}
+     {{ message }}<br>
+   {% endfor %}
+   </div>
+ {% endif %}
+{% endwith %}
+{% if current_user.is_authenticated %}
+ <h2>Hi, {{ current_user.username }}!</h2>
+ <ul>
+    {% for container in containers %}
+        <li>{{ container.id }} - {{ container.image }}</li>
+    {% endfor %}
+    <h2>Create a New Container</h2>
+ <form action="/" method="post">
+     <label for="container_name">Container Name:</label><br>
+     <input type="text" id="container_name" name="container_name"><br>
+     <label for="image">Image:</label><br>
+     <input type="text" id="image" name="image"><br>
+     <input type="submit" value="Create Container">
+ </form>
+</ul>
+ <p>
+   <a class="btn btn-primary" href="{{ url_for('logout') }}">Logout</a>
+ </p>
+{% else %}
+ <p>
+   <a class="btn btn-primary" href="{{ url_for('oauth2_authorize', provider='google') }}">Login with Google</a>
+   <a class="btn btn-primary" href="{{ url_for('oauth2_authorize', provider='github') }}">Login with GitHub</a>
+ </p>
+{% endif %}
+ 
+</body>
+</html>
